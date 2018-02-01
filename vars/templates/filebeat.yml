@@ -1,0 +1,43 @@
+#shipper conf
+name: "{{filebeat_conf.name}}"
+fields: {log_platform: "{{server}}", log_type: "{{log_type}}"}
+
+filebeat.prospectors:
+
+{% for prospector in filebeat_conf.prospectors.keys() %}
+
+- input_type: log
+  tail_files: true
+{% for key, value in filebeat_conf.prospectors[prospector].items() %}
+{% if key == 'paths' %}
+  {{ key }}:
+    - {{ value }}
+{% elif key == 'fields' %}
+  {{ key }}:
+    {{ value }}
+{% else %}
+  {{ key }}: {{ value }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+#processors:
+#- drop_fields:
+#    fields: {{filebeat_conf.processors.drop_fields.fields}}
+
+output.kafka:
+  hosts: {{filebeat_conf.output.hosts}}
+  topic: "{{filebeat_conf.output.topic}}"
+  partition.round_robin:
+    reachable_only: {{filebeat_conf.output.reachable_only}}
+  required_acks: {{filebeat_conf.output.required_acks}}
+  max_message_bytes: {{filebeat_conf.output.max_message_bytes}}
+
+logging.level: info
+logging.selectors: ["*"]
+logging.to_files: true
+logging.to_syslog: false
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat.log
+  keepfiles: 7

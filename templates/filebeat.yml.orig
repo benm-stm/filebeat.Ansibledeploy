@@ -1,0 +1,59 @@
+#shipper conf
+name: "hybris"
+#tags: ["raf-server", "raf-log"]
+fields: {server: "raf-server", log_type: "raf-log"}
+
+filebeat.prospectors:
+- input_type: log
+  tail_files: true
+  paths:
+    - /var/tmp/log_dir/hybris-console.log
+#  exclude_lines: ['.*\s*\|.*\|\s*(DEBUG|INFO|WARN)\s*\|']
+#  multiline.pattern: '.*\s*\|.*\|\s*(ERROR|DEBUG|INFO|WARN)\s*\|'
+  #multiline.pattern: '.*(ERROR|DEBUG|INFO|WARN)\s*\|'
+  multiline.pattern: '.*\s*\|.*\|\s*([Aa]lert|ALERT|[Tt]race|TRACE|[Dd]ebug|DEBUG|[Nn]otice|NOTICE|[Ii]nfo|INFO|[Ww]arn?(?:ing)?|WARN?(?:ING)?|[Ee]rr?(?:or)?|ERR?(?:OR)?|[Cc]rit?(?:ical)?|CRIT?(?:ICAL)?|[Ff]atal|FATAL|[Ss]evere|SEVERE|EMERG(?:ENCY)?|[Ee]merg(?:ency)?)\s*\|'
+  multiline.negate: true
+  multiline.match: after
+  document_type: hybris-console
+
+- input_type: log
+  tail_files: true
+  paths:
+    - /var/tmp/log_dir/apache-access.log
+  multiline.pattern: '^\[[0-9]{4}\/[0-9]{2}\/[0-9]{2}'
+  multiline.negate: true
+  multiline.match: after
+  document_type: apache-access
+
+- input_type: log
+  tail_files: true
+  paths:
+    - /var/tmp/log_dir/hybris-access.log
+  document_type: hybris-access
+
+- input_type: log
+  tail_files: true
+  paths:
+    - /var/tmp/log_dir/solr.log
+  document_type: solr-log
+
+processors:
+- drop_fields:
+    fields: ['beat', 'fields', 'input_type', 'offset']
+
+output.kafka:
+  hosts: ["221.128.59.14:9092"]
+  topic: "logs"
+  partition.round_robin:
+    reachable_only: false
+  required_acks: 1
+  max_message_bytes: 1000000
+
+logging.level: info
+logging.selectors: ["*"]
+logging.to_files: true
+logging.to_syslog: false
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat.log
+  keepfiles: 7

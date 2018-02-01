@@ -1,0 +1,14 @@
+---
+
+filebeat:
+  #for rpm based systems
+  rhel:
+    url: "{{filebeat_rhel_url | default('https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.4.2-x86_64.rpm') }}"
+    package_name: "{{ filebeat_rhel_package_name | default('filebeat-5.4.2-x86_64.rpm') }}"
+  #for apt based system
+  deb:
+    url: "{{filebeat_deb_url | default('https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.4.2-amd64.deb') }}"
+    package_name: "{{ filebeat_deb_package_name | default('filebeat-5.4.2-amd64.deb') }}"
+
+#proxy settings
+proxy_env: "{{ http_proxy | default('http://221.128.58.183:3128') }}"

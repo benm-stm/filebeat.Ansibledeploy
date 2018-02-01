@@ -1,0 +1,40 @@
+---
+
+filebeat_conf:
+  name: "www"
+  prospectors:
+    www-desktop-access:
+      paths: "{{ plateform_dir }}/donnees/traces/u*/i7hu*.desktop_access.log"
+      fields: "log_type: '{{ log_type }}-desktop'"
+      document_type: apache-access
+    www-mobile-access:
+      paths: "{{ plateform_dir }}/donnees/traces/u*/i7hu*.mobile_access.log"
+      fields: "log_type: '{{ log_type }}-mobile'"
+      document_type: apache-access
+    www-api-access:
+      paths: "{{ plateform_dir }}/donnees/traces/u*/i7hu*.api_access.log"
+      fields: "log_type: '{{ log_type }}-api'"
+      document_type: apache-access
+    www-desktop-error:
+      paths: "{{ plateform_dir }}/donnees/traces/u*/i7hu*.desktop_error.log"
+      fields: "log_type: '{{ log_type }}-desktop'"
+      document_type: apache-error
+    www-mobile-error:
+      paths: "{{ plateform_dir }}/donnees/traces/u*/i7hu*.mobile_error.log"
+      fields: "log_type: '{{ log_type }}-mobile'"
+      document_type: apache-error
+    www-api-error:
+      paths: "{{ plateform_dir }}/donnees/traces/u*/i7hu*.api_error.log"
+      fields: "log_type: '{{ log_type }}-api'"
+      document_type: apache-error
+
+  processors:
+    drop_fields:
+      fields: "['beat', 'input_type', 'offset']"
+
+  output:
+    hosts: "['221.128.59.15:9095', '221.128.59.15:9096', '221.128.59.15:9097']"
+    topic: "logs"
+    reachable_only: false
+    required_acks: 1
+    max_message_bytes: 1000000

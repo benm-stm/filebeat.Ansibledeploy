@@ -1,0 +1,206 @@
+#define platforms linked to a project () projects children
+[boutique:children]
+int1
+int2
+rec1
+rec2
+trans
+preprod1
+preprod2
+prod
+pf5
+pf6
+
+[osb:children]
+local_machine
+
+[lpfr:children]
+#pf1aosb1
+#pf1aosb2
+#pf2aosb1
+#pf2aosb2
+
+#defines global vars per project
+[lpfr:vars]
+work_dir= '/tmp/filebeat'
+binary_dir= '/i7h/i7hadm/fb/5.4.2'
+lib_dir= '/i7h/i7hadm/fb/5.4.2/lib'
+conf_dir= 'donnees/param/fb/5.4.2'
+logs_dir= 'donnees/traces/fb'
+user= 'i7hadm'
+group= 'i7h'
+filebeat_binary_location= '/usr/share/filebeat'
+
+[boutique:vars]
+work_dir= '/tmp/filebeat'
+binary_dir= '/i7h/i7hadm/fb/5.4.2'
+lib_dir= '/i7h/i7hadm/fb/5.4.2/lib'
+conf_dir= 'donnees/param/fb/5.4.2'
+logs_dir= 'donnees/traces/fb'
+user= 'i7hadm'
+group= 'i7h'
+filebeat_binary_location= '/usr/share/filebeat'
+
+[osb:vars]
+work_dir= '/tmp/filebeat'
+binary_dir= '/i7o/i7hodm/fb/5.4.2'
+lib_dir= '/i7o/i7oadm/fb/5.4.2/lib'
+conf_dir= 'donnees/param/fb/5.4.2'
+logs_dir= 'donnees/traces/fb'
+user= 'i7hadm'
+group= 'i7o'
+filebeat_binary_location= '/usr/share/filebeat'
+
+
+#boutique platforms
+[int1]
+pf1A-f1	ansible_ssh_host=221.129.86.97	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1a log_type=hybrisf1
+pf1A-f2	ansible_ssh_host=221.129.86.96	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1a log_type=hybrisf2
+pf1A-f3	ansible_ssh_host=221.129.87.185	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1a log_type=hybrisf3
+
+pf1A-b1	ansible_ssh_host=221.129.86.95	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1a log_type=hybrisb1
+pf1A-b2	ansible_ssh_host=221.129.86.94	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1a log_type=hybrisb2
+
+pf1A-wwwf1	ansible_ssh_host=221.129.86.103 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1a log_type=wwwf1
+pf1A-wwwf2	ansible_ssh_host=221.129.86.102 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1a log_type=wwwf2
+pf1A-wwwf3	ansible_ssh_host=221.129.87.184 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1a log_type=wwwf3
+
+pf1A-wwwb1	ansible_ssh_host=221.129.86.99 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1a log_type=wwwb1
+pf1A-wwwb2	ansible_ssh_host=221.129.86.98 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1a log_type=wwwb2
+
+
+[int2]        
+pf1B-f1	ansible_ssh_host=221.129.86.243	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1b log_type=hybrisf1
+pf1B-f2	ansible_ssh_host=221.129.86.242	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1b log_type=hybrisf2
+pf1B-f3	ansible_ssh_host=221.129.87.187	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1b log_type=hybrisf3
+
+pf1B-b1	ansible_ssh_host=221.129.86.241	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1b log_type=hybrisb1
+pf1B-b2	ansible_ssh_host=221.129.86.240	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf1b log_type=hybrisb2
+
+pf1B-wwwf1	ansible_ssh_host=221.129.86.252 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1b log_type=wwwf1
+pf1B-wwwf2	ansible_ssh_host=221.129.86.251 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1b log_type=wwwf2
+pf1B-wwwf3	ansible_ssh_host=221.129.87.186 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1b log_type=wwwf3
+
+pf1B-wwwb1	ansible_ssh_host=221.129.86.250 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1b log_type=wwwb1
+pf1B-wwwb2	ansible_ssh_host=221.129.86.249 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf1b log_type=wwwb2
+
+
+[rec1]  
+pf2A-f1	ansible_ssh_host=221.129.86.65	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf2a log_type=hybrisf1
+pf2A-f2	ansible_ssh_host=221.129.86.64	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf2a log_type=hybrisf2
+pf2A-f3	ansible_ssh_host=221.129.87.189	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf2a log_type=hybrisf3
+
+pf2A-b1	ansible_ssh_host=221.129.86.63	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf2a log_type=hybrisb1
+pf2A-b2	ansible_ssh_host=221.129.86.62	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf2a log_type=hybrisb2
+
+pf2A-wwwf1	ansible_ssh_host=221.129.86.69 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2a log_type=wwwf1
+pf2A-wwwf2	ansible_ssh_host=221.129.86.68 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2a log_type=wwwf2
+pf2A-wwwf3	ansible_ssh_host=221.129.87.188 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2a log_type=wwwf3
+
+pf2A-wwwb1	ansible_ssh_host=221.129.86.67 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2a log_type=wwwb1
+pf2A-wwwb2	ansible_ssh_host=221.129.86.66 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2a log_type=wwwb2
+
+[rec2]
+pf2B-f1        ansible_ssh_host=221.129.86.218 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf2b log_type=hybrisf1
+pf2B-f2        ansible_ssh_host=221.129.86.217 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf2b log_type=hybrisf2
+pf2B-f3        ansible_ssh_host=221.129.87.191 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf2b log_type=hybrisf3
+
+pf2B-b1        ansible_ssh_host=221.129.86.216 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf2b log_type=hybrisb1
+pf2B-b2        ansible_ssh_host=221.129.86.215 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf2b log_type=hybrisb2
+
+pf2B-wwwf1      ansible_ssh_host=221.129.86.222 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2b log_type=wwwf1
+pf2B-wwwf2      ansible_ssh_host=221.129.86.221 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2b log_type=wwwf2
+pf2B-wwwf3      ansible_ssh_host=221.129.87.190 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2b log_type=wwwf3
+
+pf2B-wwwb1      ansible_ssh_host=221.129.86.220 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2b log_type=wwwb1
+pf2B-wwwb2      ansible_ssh_host=221.129.86.219 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf2b log_type=wwwb2
+
+[trans]  
+
+[preprod1]  
+
+[preprod2]  
+
+[prod]
+
+[pf5]
+pf5-f1	ansible_ssh_host=221.128.58.188 ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf5 log_type=hybrisf1
+pf5-f2	ansible_ssh_host=221.128.58.189	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf5 log_type=hybrisf2
+pf5-f3	ansible_ssh_host=221.128.59.48	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf5 log_type=hybrisf3
+
+pf5-b1	ansible_ssh_host=221.128.58.190	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf5 log_type=hybrisb1
+pf5-b2	ansible_ssh_host=221.128.58.191	ansible_connection=ssh	ansible_user=root hosted_app=hybris server=pf5 log_type=hybrisb2
+
+pf5-wwwf1	ansible_ssh_host=221.128.58.184 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf5 log_type=wwwf1
+pf5-wwwf2	ansible_ssh_host=221.128.58.185 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf5 log_type=wwwf2
+pf5-wwwf3	ansible_ssh_host=221.128.59.47 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf5 log_type=wwwf3
+
+pf5-wwwb1	ansible_ssh_host=221.128.58.186 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf5 log_type=wwwb1
+pf5-wwwb2	ansible_ssh_host=221.128.58.187 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf5 log_type=wwwb2
+
+
+[pf6]
+pf6-f1	ansible_ssh_host=221.128.58.205 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf6 log_type=hybrisf1
+pf6-f2	ansible_ssh_host=221.128.58.206 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf6 log_type=hybrisf2
+pf6-f3	ansible_ssh_host=221.128.59.50 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf6 log_type=hybrisf3
+
+pf6-b1	ansible_ssh_host=221.128.58.207 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf6 log_type=hybrisb1
+pf6-b2	ansible_ssh_host=221.128.58.208 ansible_connection=ssh  ansible_user=root hosted_app=hybris server=pf6 log_type=hybrisb2
+
+pf6-wwwf1	ansible_ssh_host=221.128.58.201 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf6 log_type=wwwf1
+pf6-wwwf2	ansible_ssh_host=221.128.58.202 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf6 log_type=wwwf2
+pf6-wwwf3	ansible_ssh_host=221.128.59.49 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf6 log_type=wwwf3
+
+pf6-wwwb1	ansible_ssh_host=221.128.58.203 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf6 log_type=wwwb1
+pf6-wwwb2	ansible_ssh_host=221.128.58.204 ansible_connection=ssh  ansible_user=root hosted_app=apache server=pf6 log_type=wwwb2
+
+#test purpose
+[local_machine]
+#local_machne	ansible_ssh_host=localhost	ansible_connection=local hosted_app=hybris
+
+
+#int1 => pf1A
+[int1:vars]    
+plateform_dir= '/i7h/i7hadmaa'
+
+#int1 => pf1B
+[int2:vars]        
+plateform_dir= '/i7h/i7hadmba'
+
+#rec1 => pf2A
+[rec1:vars]  
+plateform_dir= '/i7h/i7hadmaa'
+
+#rec2 => pf2B
+[rec2:vars]  
+plateform_dir= '/i7h/i7hadmbb'
+
+#trans => pft
+[trans:vars]  
+plateform_dir= '/i7h/i7hadmba'
+
+#preprod1 => pf3A
+[preprod1:vars]  
+plateform_dir= '/i7h/i7hadmaa'
+
+#preprod2 => pf3B
+[preprod2:vars]  
+plateform_dir= '/i7h/i7hadmaa'
+
+#prod => pf4
+[prod:vars]  
+plateform_dir= '/i7h/i7hadmaa'
+
+[pf5:vars]  
+plateform_dir= '/i7h/i7hadmca'
+
+[pf6:vars]  
+plateform_dir= '/i7h/i7hadmcb'
+
+#lpfr platforms
+#[anis:vars]
+#plateform_dir= '/anispath'
+
+#for test purpose local machine child of lpfr
+[local_machine:vars]
+plateform_dir= '/raflor'

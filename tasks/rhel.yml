@@ -1,0 +1,59 @@
+# for RHEL based distributions
+
+- name: Check filebeat rhel existence
+  local_action: stat path="../files/{{ filebeat.rhel.package_name }}"
+  register: check_filebeat_rpm_existence
+
+# - name: copy local filebeat rhel to remote if exists  
+#   copy: src={{ item }} dest={{ work_dir }}
+#   with_fileglob:
+#     - "../files/filebeat*.rhel"
+#   when: check_filebeat_deb_existence
+
+- name: copy local filebeat rhel to remote if exists  
+  copy: src=../files/{{ filebeat.rhel.package_name }} dest={{ work_dir }}
+  #when: check_filebeat_rpm_existence.stat.exists
+  register: check_filebeat_installer_rhel
+
+- name: Check filebeat RHEL
+  stat: 
+    path : "{{ work_dir }}/{{ filebeat.rhel.package_name }}"
+  register: check_filebeat_installer_rhel
+  
+- name: Download filebeat package RHEL
+  get_url:
+    url: "{{ filebeat.rhel.url }}"
+    dest: "{{ work_dir }}"
+    validate_certs: false
+  become: true
+  environment:
+    http_proxy: "{{ proxy_env }}"
+    https_proxy: "{{ proxy_env }}"
+  changed_when: false
+  when: not check_filebeat_installer_rhel.stat.exists and
+        not check_filebeat_rpm_existence.stat.exists and
+        (ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'SLES')
+
+- name: remove filebeat if exists
+  yum: 
+    name: filebeat
+    state: absent
+  become: true
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Install filebeat package RHEL
+  yum:
+    name: "{{ work_dir }}/{{ filebeat.rhel.package_name}}"
+    state: present
+  become: true
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: remove filebeat if exists SUSE
+  command: "echo yes | rpm -e {{ filebeat.rhel.package_name}}"
+  become: true
+  when: ansible_distribution == 'SLES'
+
+- name: Install filebeat package SUSE
+  command: "rpm -vi {{ work_dir }}/{{ filebeat.rhel.package_name}} --force"
+  become: true
+  when: ansible_distribution == 'SLES'

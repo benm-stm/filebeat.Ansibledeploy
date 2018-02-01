@@ -1,0 +1,27 @@
+---
+
+filebeat_conf:
+  name: "osb"
+  fields: 
+    server: "osb-server"
+    log_type: "osb-log"
+  prospectors:
+    wwwb1-desktop:
+      paths: "{{ plateform_dir }}/donnees/traces/uw/OHS/{{ osbohs1 }}/access.log"
+      fields: "log_type: '{{ inventory_hostname }}'"
+      document_type: osb-access
+    wwwb1-mobile:
+      paths: "{{ plateform_dir }}/donnees/traces/uw/OHS/{{ osbohs2 }}/access.log"
+      fields: "log_type: '{{ inventory_hostname }}'"
+      document_type: osb-access
+
+  processors:
+    drop_fields:
+      fields: "['beat', 'input_type', 'offset']"
+
+  output:
+    hosts: "['221.128.59.15:9095', '221.128.59.15:9096', '221.128.59.15:9097']"
+    topic: "logs"
+    reachable_only: false
+    required_acks: 1
+    max_message_bytes: 1000000

@@ -1,0 +1,152 @@
+---
+#for debugging matters
+#- name: distribution
+# debug:
+#   var: "group_names"cd plateform_dir
+###  cleanup if exists
+
+- name: Cleanup workdir
+  file:
+    state: absent
+    path: "{{ work_dir }}/"
+  changed_when: false
+  become: true
+
+## RED zone => if you are not certain of your conf just remove this part
+- name: Cleanup binary dirs
+  file:
+    state: absent
+    path: "{{ binary_dir }}"
+  changed_when: false
+  become: true
+
+- name: Cleanup lib dir
+  file:
+    state: absent
+    path: "{{ plateform_dir }}/{{ lib_dir }}"
+  changed_when: false
+  become: true
+
+- name: Cleanup params dir
+  file:
+    state: absent
+    path: "{{ plateform_dir }}/{{ conf_dir }}"
+  changed_when: false
+  become: true
+
+- name: Cleanup log dir
+  file:
+    state: absent
+    path: "{{ plateform_dir }}/{{ logs_dir }}"
+  changed_when: false
+  become: true
+
+- name: Check if filebeat is running
+  shell: ps aux | grep filebeat | grep -v grep
+  ignore_errors: yes
+  changed_when: false
+  register: filebeat_status
+  tags:
+    - status
+
+- name: Report status of filebeat
+  fail:
+    msg: |
+      Service apache2 is not running.
+      Return code from `grep`:
+      {{ service_apache_status.rc }}
+  when: filebeat_status.rc != 0
+  tags:
+    - status
+
+- name: Kill filebeat processes if they exist
+  action: shell pkill filebeat || true
+  ignore_errors: True
+  tags:
+    - stop
+###
+
+### init ansible role and dirs
+- name: Include variables for {{ hosted_app }}
+  include_vars: "{{ hosted_app }}.yml"
+
+- name: Create tmp directory
+  file:
+    path: "{{ work_dir }}"
+    state: directory
+  become: true
+  changed_when: false
+
+- name: Create module directory (binary)
+  file:
+    path: "{{ binary_dir }}"
+    state: directory
+  become: true
+  changed_when: false
+
+- name: Create lib directory
+  file:
+    path: "{{ lib_dir }}"
+    state: directory
+  become: true
+  changed_when: false
+
+- name: Create conf directory
+  file:
+    path: "{{ plateform_dir }}/{{ conf_dir }}"
+    state: directory
+  become: true
+  changed_when: false
+
+- name: Create logs directory
+  file:
+    path: "{{ plateform_dir }}/{{ logs_dir }}"
+    state: directory
+  become: true
+  changed_when: false
+###
+
+# Include tasks depending on the host's OS
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: rhel.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'SLES'
+
+#Reorganize the filesystem to la poste standard
+- name: Move filebeat binary under module directory
+  shell: mv {{filebeat_binary_location}}/* {{ binary_dir }}
+  become: true
+
+# Importing filebeat's config
+- name: create filebeat config file
+  template:
+    src: ../templates/filebeat.yml
+    dest: "{{ plateform_dir }}/{{ conf_dir }}/filebeat.yml"
+    backup: true
+  become: true
+
+# Importing filebeat's shell launcher
+- name: create filebeat shell launcher
+  template:
+    src: ../templates/filebeat.sh.yml
+    dest: "{{ binary_dir }}/filebeat.sh"
+    #owner: "{{ user }}"
+    #group: "{{ group }}"
+    mode: 0755
+  become: true
+
+#run filebeat process in background
+- name: run filebeat
+  shell: "nohup {{ binary_dir }}/filebeat.sh -e > /dev/null 2&>1 &"
+  become: true
+  tags:
+    - start
+
+#Workdir cleanup
+- name: removing working dir
+  file:
+    state: absent
+    path: "{{ work_dir }}/"
+  changed_when: false
+  become: true
